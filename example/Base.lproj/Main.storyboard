@@ -25,13 +25,22 @@
                                 <rect key="frame" x="87" y="537" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="64" minValue="64" maxValue="300" translatesAutoresizingMaskIntoConstraints="NO" id="QIM-O7-OXY">
+                                <rect key="frame" x="18" y="106" width="378" height="31"/>
+                                <connections>
+                                    <action selector="drawWithSlider:" destination="BYZ-38-t0r" eventType="valueChanged" id="e05-oA-M2B"/>
+                                </connections>
+                            </slider>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QIM-O7-OXY" secondAttribute="trailing" constant="20" id="4JV-SF-QKI"/>
                             <constraint firstItem="1rg-iG-lQk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KM4-k4-hET"/>
                             <constraint firstItem="K5H-z0-w6P" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LgS-SO-ZyF"/>
+                            <constraint firstItem="QIM-O7-OXY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="fAT-vK-tJy"/>
                             <constraint firstItem="1rg-iG-lQk" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="mch-Vx-NDU"/>
+                            <constraint firstItem="QIM-O7-OXY" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="62" id="r5g-KG-Bv9"/>
                             <constraint firstItem="K5H-z0-w6P" firstAttribute="top" secondItem="1rg-iG-lQk" secondAttribute="bottom" constant="18" id="woT-3t-9Vh"/>
                         </constraints>
                     </view>
@@ -42,7 +51,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="112"/>
+            <point key="canvasLocation" x="137.68115942028987" y="111.83035714285714"/>
         </scene>
     </scenes>
     <resources>
