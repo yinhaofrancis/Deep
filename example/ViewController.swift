@@ -33,7 +33,7 @@ class ViewController: UIViewController {
             Block(width: 40, height: 50) {  }
             Block() {  }
         
-            Block(alignSelf: .stretch) {
+            Block(justcontent: .center, alignSelf: .stretch) {
                 Block(color: UIColor.blue.cgColor, width: 10, height: 10) {  }
                 Block(color: UIColor.blue.cgColor, width: 20, height: 20) {  }
                 Block(color: UIColor.blue.cgColor, width: 30, height: 30) {  }
