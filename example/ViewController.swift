@@ -24,15 +24,15 @@ class ViewController: UIViewController {
         self.draw(w: CGFloat(slider.value))
     }
     func draw(w:CGFloat){
-        tc = try! TextContext(w: Int(w), h: 300)
+        tc = try! TextContext(w: Int(w), h: Int(w))
         let c = Canvas {
             
             Block(width: 10, height: 20) { }
             Block(width: 20, height: 30) {}
             Block(width: 30, height: 40) {  }
-            Block(width: 40, height: 50) {  }
-            Block() {  }
-        
+            Block(width: 40, height: 50,flex: 1) {  }
+            Block(height: 20, flex:1) {  }
+            Block(height: 10, flex:2) {  }
             Block(justcontent: .center, alignSelf: .stretch) {
                 Block(color: UIColor.blue.cgColor, width: 10, height: 10) {  }
                 Block(color: UIColor.blue.cgColor, width: 20, height: 20) {  }
@@ -40,8 +40,8 @@ class ViewController: UIViewController {
             }
         }
         c.direction = self.direction
-        c.alignItem = .stretch
-        c.justcontent = .stretch
+        c.alignItem = .center
+        c.justcontent = .evenly
         label.image = UIImage(cgImage: tc.render(component: c)! ,scale: UIScreen.main.scale, orientation: .up)
         
 //        let a = RichText(width: 100) {

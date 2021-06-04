@@ -24,7 +24,7 @@ public struct BlockBuild{
 public class Canvas:Block{
 
     public init(@BlockBuild children:()->[Block]) {
-        super.init(color: CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1,1,1,1])! , width: .unset(direction: .H), height: .unset(direction: .V),direction: .H, childs: children)
+        super.init(color: CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1,1,1,1])! , bWidth: .unset(direction: .H), bHeight: .unset(direction: .V),direction: .H, childs: children)
     }
 }
 
@@ -40,7 +40,6 @@ public enum Content{
     case end
     case between
     case around
-    case stretch
     case evenly
 }
 
@@ -148,56 +147,70 @@ open class Block {
     public var alignItem:Align
     public var alignContent:Content
     public var alignSelf:Align?
+    public var flex:CGFloat
+    var extra:CGFloat = 0
     public convenience init(color:CGColor? = nil,
-                            width:CGFloat,
-                            height:CGFloat,
+                            width:CGFloat = -1,
+                            height:CGFloat = -1 ,
                             direction:Direction = .H,
                             justcontent:Content = .start,
                             alignItem:Align = .stretch,
                             alignContent:Content = .start,
                             alignSelf:Align? = nil,
-        
+                            flex:CGFloat = 0,
                             @BlockBuild childs:()->[Block]) {
         self.init(color:color,
-                  width:BFloat.value(v: width),
-                  height:BFloat.value(v: height),
+                  bWidth:width < 0 ? .unset(direction: .H) :BFloat.value(v: width),
+                  bHeight:height < 0 ? .unset(direction: .V) :BFloat.value(v: height),
                   direction: direction,
                   justcontent:justcontent,
                   alignItem:alignItem,
                   alignContent:alignContent,
                   alignSelf:alignSelf,
+                  flex:flex,
                   childs:childs)
     }
     public init(color:CGColor? = nil,
-                width:BFloat = .unset(direction: .H),
-                height:BFloat = .unset(direction: .V),
+                bWidth:BFloat,
+                bHeight:BFloat,
                 direction:Direction = .H,
                 justcontent:Content = .start,
                 alignItem:Align = .stretch,
                 alignContent:Content = .start,
                 alignSelf:Align? = nil,
+                flex:CGFloat = 0,
                 @BlockBuild childs:()->[Block]) {
-        self.width = width
-        self.height = height
+        self.width = bWidth
+        self.height = bHeight
         self.baseline = .makeXValue(origin: 0)
         self.color = color
         var c = CTRunDelegateCallbacks(version: 0, dealloc: { _ in
             
         }, getAscent: { i in
             let b = Unmanaged<Block>.fromOpaque(i).takeUnretainedValue()
-            return b.ascent
             
+            return b.ascent
         }, getDescent: { i in
             let b = Unmanaged<Block>.fromOpaque(i).takeUnretainedValue()
-            return b.descent
+//            if b.parent?.direction == .V{
+//                return b.descent + b.extra
+//            }else{
+                return b.descent
+//            }
         }, getWidth: { i in
             let b = Unmanaged<Block>.fromOpaque(i).takeUnretainedValue()
-            return b.size
+//            if b.parent?.direction == .H{
+                return b.size + b.extra
+//            }else{
+//                return b.size
+//            }
+            
         })
         self.justcontent = justcontent
         self.alignItem = alignItem
         self.alignContent = alignContent
         self.alignSelf = alignSelf
+        self.flex = flex
         self.content = childs().reduce(NSMutableAttributedString(), { a, b in
             b.parent = self
             a.append(b.aStr)
@@ -236,10 +249,8 @@ open class Block {
             ctx.setStrokeColor(CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1,0,0,1])!)
             ctx.stroke(rect)
         }
-        
-        let frameset = self.contentFrame
-        let frame = CTFramesetterCreateFrame(frameset, CFRangeMake(0,self.content.length), CGPath(rect: rect , transform: nil), [kCTFrameProgressionAttributeName:self.direction == .H ? CTFrameProgression.topToBottom.rawValue: CTFrameProgression.leftToRight.rawValue] as CFDictionary)
-        let rframe = RichTextFrame(frame: frame, direction: self.direction)
+        self.fillSpace(rect: rect)
+        let rframe = self.createRFrame(rect: rect)
         let rflines = rframe.lines
         
         for u in rflines{
@@ -247,18 +258,52 @@ open class Block {
             let startAndStep = self.makeStartAndStep(rframe: rframe, delegetRun: delegetRun)
             let start:CGFloat = startAndStep.0
             let step:CGFloat = startAndStep.1
-            let space:CGFloat = startAndStep.2
             for i in 0 ..< delegetRun.count{
                 let eachRun = delegetRun[i]
                 let align = eachRun.block?.alignSelf == nil ? self.alignItem : eachRun.block!.alignSelf!
-                let crect = eachRun.rect(line: u,alignItem: align, startOffset: start, stepOffset: step, index: i,space: space, unsetIndex: startAndStep.3)
+                let crect = eachRun.rect(line: u,alignItem: align, startOffset: start, stepOffset: step, index: i)
                 eachRun.block?.draw(ctx: ctx, rect: CGRect(x: rect.origin.x + crect.origin.x, y: rect.origin.y + crect.origin.y, width: crect.width, height: crect.height))
 
             }
         }
         ctx.restoreGState()
     }
-    private func makeStartAndStep(rframe:RichTextFrame,delegetRun:[RichTextRun])->(CGFloat,CGFloat,CGFloat,[Int]){
+    private func createRFrame(rect:CGRect)->RichTextFrame{
+        let frameset = self.contentFrame
+        let frame = CTFramesetterCreateFrame(frameset, CFRangeMake(0,self.content.length), CGPath(rect: rect , transform: nil), [kCTFrameProgressionAttributeName:self.direction == .H ? CTFrameProgression.topToBottom.rawValue: CTFrameProgression.leftToRight.rawValue] as CFDictionary)
+        let rframe = RichTextFrame(frame: frame, direction: self.direction)
+        return rframe
+    }
+    private func fillSpace(rect:CGRect){
+        let rframe = self.createRFrame(rect: rect)
+        let rlines = rframe.lines
+        let frameSize = self.direction == .H ? rframe.size.width : rframe.size.height
+        for i in rlines {
+            let linfo = i.lineInfo
+            let delta = frameSize - linfo.width
+            let rundelegate = i.delegateRun
+            let sum = rundelegate.reduce(into: CGFloat(0)) { r, run in
+                let s = self.direction == .H ? run.block?.width.mode == .unset : run.block?.height.mode == .unset
+                if s{
+                     r += (run.block?.flex ?? 0)
+                }
+            }
+            if(sum > 0){
+                for i in rundelegate{
+                    if self.direction == .H{
+                        if (i.block?.flex ?? 0) > 0 && i.block?.width.mode == .unset{
+                            i.block?.extra = delta * (i.block?.flex ?? 0) / sum
+                        }
+                    }else{
+                        if (i.block?.flex ?? 0) > 0 && i.block?.height.mode == .unset{
+                            i.block?.extra = delta * (i.block?.flex ?? 0) / sum
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private func makeStartAndStep(rframe:RichTextFrame,delegetRun:[RichTextRun])->(CGFloat,CGFloat){
         var start:CGFloat = 0
         var step:CGFloat = 0
         let delta = rframe.size.width - delegetRun.reduce(0.0, { r, c in
@@ -296,15 +341,8 @@ open class Block {
             start = delta / CGFloat(delegetRun.count + 1)
             step = start
             break
-        case .stretch:
-            start = 0
-            step = 0
-            if unsetW.count > 0 {
-                return (0,0,delta / CGFloat(unsetW.count),unsetW)
-            }
-            break
         }
-        return (start,step,0,[])
+        return (start,step)
     }
     public var contentFrame:CTFramesetter{
         let a = NSMutableAttributedString(attributedString: self.content)

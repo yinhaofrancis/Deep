@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A99A6B852668CE8C00FC9ACA /* Block.h in Headers */ = {isa = PBXBuildFile; fileRef = A99A6B832668CE8C00FC9ACA /* Block.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A99A6B882668CE8C00FC9ACA /* Block.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99A6B812668CE8C00FC9ACA /* Block.framework */; };
 		A99A6B892668CE8C00FC9ACA /* Block.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A99A6B812668CE8C00FC9ACA /* Block.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A99A6B8E2668CED500FC9ACA /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A6B8D2668CED500FC9ACA /* Block.swift */; };
@@ -46,7 +45,6 @@
 
 /* Begin PBXFileReference section */
 		A99A6B812668CE8C00FC9ACA /* Block.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Block.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A99A6B832668CE8C00FC9ACA /* Block.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Block.h; sourceTree = "<group>"; };
 		A99A6B842668CE8C00FC9ACA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A99A6B8D2668CED500FC9ACA /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		A99A6B8F2668E45F00FC9ACA /* CoreTextExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTextExt.swift; sourceTree = "<group>"; };
@@ -83,7 +81,6 @@
 		A99A6B822668CE8C00FC9ACA /* Block */ = {
 			isa = PBXGroup;
 			children = (
-				A99A6B832668CE8C00FC9ACA /* Block.h */,
 				A99A6B842668CE8C00FC9ACA /* Info.plist */,
 				A99A6B8D2668CED500FC9ACA /* Block.swift */,
 				A99A6B8F2668E45F00FC9ACA /* CoreTextExt.swift */,
@@ -139,7 +136,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A99A6B852668CE8C00FC9ACA /* Block.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
