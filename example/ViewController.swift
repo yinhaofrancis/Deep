@@ -9,8 +9,10 @@ import UIKit
 import Block
 class ViewController: UIViewController {
 
+   
     @IBOutlet weak var text2: UIImageView!
     @IBOutlet weak var label: UIImageView!
+    var direction:Direction = .H
     var tc:TextContext = try! TextContext(w: 100, h: 200)
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,25 +24,22 @@ class ViewController: UIViewController {
         self.draw(w: CGFloat(slider.value))
     }
     func draw(w:CGFloat){
-        tc = try! TextContext(w: Int(w), h: 200)
+        tc = try! TextContext(w: Int(w), h: Int(w))
         let c = Canvas { b in
             
-            Block(parent: b,color:UIColor.red.cgColor, width: 20, height: 20) { _ in }
-            Block(parent: b,color:UIColor.red.cgColor, width: 20, height: 20) { _ in }
-            Block(parent: b,color:UIColor.red.cgColor, width: 20, height: 20) { _ in }
-            Block(parent: b,color:UIColor.red.cgColor, width: 20, height: 20) { _ in }
-            Block(parent: b,color:UIColor.red.cgColor, width: 20, height: 20) { _ in }
-            Block(parent: b,color:UIColor.red.cgColor, width: 20, height: 20) { _ in }
-            Block(parent: b,color:UIColor.red.cgColor, width: 20, height: 20) { _ in }
-            Block(parent: b,color:UIColor.red.cgColor, width: 20, height: 20) { _ in }
-            Block(parent: b,color:UIColor.red.cgColor, width: 20, height: 20) { b in
-                Block(parent: b, color: UIColor.blue.cgColor, width: 5, height: 5) { _ in }
-                Block(parent: b, color: UIColor.blue.cgColor, width: 5, height: 5) { _ in }
-                Block(parent: b, color: UIColor.blue.cgColor, width: 5, height: 5) { _ in }
-            }
-            Block(parent: b,color:UIColor.red.cgColor, width: 20, height: 20) { _ in }
-        }
+            Block(parent: b, width: 10, height: 20) { _ in }
+            Block(parent: b, width: 20, height: 30) { _ in }
+            Block(parent: b, width: 30, height: 40) { _ in }
+            Block(parent: b, width: 40, height: 50) { _ in }
+            Block(parent: b, width: w / 3.0, height: 60) { _ in }
         
+            Block(parent: b) { b in
+                Block(parent: b, color: UIColor.blue.cgColor, width: 10, height: 10) { _ in }
+                Block(parent: b, color: UIColor.blue.cgColor, width: 20, height: 20) { _ in }
+                Block(parent: b, color: UIColor.blue.cgColor, width: 30, height: 30) { _ in }
+            }
+        }
+        c.direction = self.direction
         label.image = UIImage(cgImage: tc.render(component: c)! ,scale: UIScreen.main.scale, orientation: .up)
         
 //        let a = RichText(width: 100) {
@@ -67,6 +66,11 @@ class ViewController: UIViewController {
 
 ////        text2.image = UIImage(cgImage: tc.renderFrame(component: a)!, scale: UIScreen.main.scale, orientation: .up)
 //        
+    }
+    @IBAction func chage(_ sender: UISwitch) {
+
+        self.direction = sender.isOn ? .H : .V
+        self.draw(w: 200)
     }
 }
 

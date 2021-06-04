@@ -7,18 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A99A6B752668BF0700FC9ACA /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A6B742668BF0700FC9ACA /* Builder.swift */; };
-		A99A6B772668BF7400FC9ACA /* CoreTextModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A6B762668BF7400FC9ACA /* CoreTextModel.swift */; };
-		A99A6B792668BFBB00FC9ACA /* Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A6B782668BFBB00FC9ACA /* Render.swift */; };
-		A99A6B7B2668C00100FC9ACA /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A6B7A2668C00100FC9ACA /* Text.swift */; };
 		A99A6B852668CE8C00FC9ACA /* Block.h in Headers */ = {isa = PBXBuildFile; fileRef = A99A6B832668CE8C00FC9ACA /* Block.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A99A6B882668CE8C00FC9ACA /* Block.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99A6B812668CE8C00FC9ACA /* Block.framework */; };
 		A99A6B892668CE8C00FC9ACA /* Block.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A99A6B812668CE8C00FC9ACA /* Block.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A99A6B8E2668CED500FC9ACA /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A6B8D2668CED500FC9ACA /* Block.swift */; };
 		A99A6B902668E45F00FC9ACA /* CoreTextExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A6B8F2668E45F00FC9ACA /* CoreTextExt.swift */; };
 		A99A6B922668E8A800FC9ACA /* Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A6B912668E8A800FC9ACA /* Render.swift */; };
-		A9BA2DB82667464B00B25A9D /* Deep.h in Headers */ = {isa = PBXBuildFile; fileRef = A9BA2DB62667464B00B25A9D /* Deep.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A9BA2DBF2667466500B25A9D /* Deep.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BA2DBE2667466500B25A9D /* Deep.swift */; };
 		A9BA2DC8266747BF00B25A9D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BA2DC7266747BF00B25A9D /* AppDelegate.swift */; };
 		A9BA2DCC266747BF00B25A9D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BA2DCB266747BF00B25A9D /* ViewController.swift */; };
 		A9BA2DCF266747BF00B25A9D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9BA2DCD266747BF00B25A9D /* Main.storyboard */; };
@@ -51,20 +45,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A99A6B742668BF0700FC9ACA /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
-		A99A6B762668BF7400FC9ACA /* CoreTextModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTextModel.swift; sourceTree = "<group>"; };
-		A99A6B782668BFBB00FC9ACA /* Render.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Render.swift; sourceTree = "<group>"; };
-		A99A6B7A2668C00100FC9ACA /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
 		A99A6B812668CE8C00FC9ACA /* Block.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Block.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99A6B832668CE8C00FC9ACA /* Block.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Block.h; sourceTree = "<group>"; };
 		A99A6B842668CE8C00FC9ACA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A99A6B8D2668CED500FC9ACA /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		A99A6B8F2668E45F00FC9ACA /* CoreTextExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTextExt.swift; sourceTree = "<group>"; };
 		A99A6B912668E8A800FC9ACA /* Render.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Render.swift; sourceTree = "<group>"; };
-		A9BA2DB32667464B00B25A9D /* Deep.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Deep.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A9BA2DB62667464B00B25A9D /* Deep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Deep.h; sourceTree = "<group>"; };
-		A9BA2DB72667464B00B25A9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A9BA2DBE2667466500B25A9D /* Deep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deep.swift; sourceTree = "<group>"; };
 		A9BA2DC02667469500B25A9D /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		A9BA2DC5266747BF00B25A9D /* example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9BA2DC7266747BF00B25A9D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -77,13 +63,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		A99A6B7E2668CE8C00FC9ACA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A9BA2DB02667464B00B25A9D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -117,7 +96,6 @@
 			isa = PBXGroup;
 			children = (
 				A9BA2DC02667469500B25A9D /* config.xcconfig */,
-				A9BA2DB52667464B00B25A9D /* Deep */,
 				A9BA2DC6266747BF00B25A9D /* example */,
 				A99A6B822668CE8C00FC9ACA /* Block */,
 				A9BA2DB42667464B00B25A9D /* Products */,
@@ -128,25 +106,10 @@
 		A9BA2DB42667464B00B25A9D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A9BA2DB32667464B00B25A9D /* Deep.framework */,
 				A9BA2DC5266747BF00B25A9D /* example.app */,
 				A99A6B812668CE8C00FC9ACA /* Block.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A9BA2DB52667464B00B25A9D /* Deep */ = {
-			isa = PBXGroup;
-			children = (
-				A9BA2DB62667464B00B25A9D /* Deep.h */,
-				A9BA2DB72667464B00B25A9D /* Info.plist */,
-				A99A6B782668BFBB00FC9ACA /* Render.swift */,
-				A9BA2DBE2667466500B25A9D /* Deep.swift */,
-				A99A6B7A2668C00100FC9ACA /* Text.swift */,
-				A99A6B762668BF7400FC9ACA /* CoreTextModel.swift */,
-				A99A6B742668BF0700FC9ACA /* Builder.swift */,
-			);
-			path = Deep;
 			sourceTree = "<group>";
 		};
 		A9BA2DC6266747BF00B25A9D /* example */ = {
@@ -180,14 +143,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A9BA2DAE2667464B00B25A9D /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A9BA2DB82667464B00B25A9D /* Deep.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -207,24 +162,6 @@
 			name = Block;
 			productName = Block;
 			productReference = A99A6B812668CE8C00FC9ACA /* Block.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		A9BA2DB22667464B00B25A9D /* Deep */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A9BA2DBB2667464B00B25A9D /* Build configuration list for PBXNativeTarget "Deep" */;
-			buildPhases = (
-				A9BA2DAE2667464B00B25A9D /* Headers */,
-				A9BA2DAF2667464B00B25A9D /* Sources */,
-				A9BA2DB02667464B00B25A9D /* Frameworks */,
-				A9BA2DB12667464B00B25A9D /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Deep;
-			productName = Deep;
-			productReference = A9BA2DB32667464B00B25A9D /* Deep.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		A9BA2DC4266747BF00B25A9D /* example */ = {
@@ -259,10 +196,6 @@
 						CreatedOnToolsVersion = 12.5;
 						LastSwiftMigration = 1250;
 					};
-					A9BA2DB22667464B00B25A9D = {
-						CreatedOnToolsVersion = 12.5;
-						LastSwiftMigration = 1250;
-					};
 					A9BA2DC4266747BF00B25A9D = {
 						CreatedOnToolsVersion = 12.5;
 					};
@@ -281,7 +214,6 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A9BA2DB22667464B00B25A9D /* Deep */,
 				A9BA2DC4266747BF00B25A9D /* example */,
 				A99A6B802668CE8C00FC9ACA /* Block */,
 			);
@@ -290,13 +222,6 @@
 
 /* Begin PBXResourcesBuildPhase section */
 		A99A6B7F2668CE8C00FC9ACA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A9BA2DB12667464B00B25A9D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -323,18 +248,6 @@
 				A99A6B8E2668CED500FC9ACA /* Block.swift in Sources */,
 				A99A6B902668E45F00FC9ACA /* CoreTextExt.swift in Sources */,
 				A99A6B922668E8A800FC9ACA /* Render.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A9BA2DAF2667464B00B25A9D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A9BA2DBF2667466500B25A9D /* Deep.swift in Sources */,
-				A99A6B7B2668C00100FC9ACA /* Text.swift in Sources */,
-				A99A6B772668BF7400FC9ACA /* CoreTextModel.swift in Sources */,
-				A99A6B752668BF0700FC9ACA /* Builder.swift in Sources */,
-				A99A6B792668BFBB00FC9ACA /* Render.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,61 +467,6 @@
 			};
 			name = Release;
 		};
-		A9BA2DBC2667464B00B25A9D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A9BA2DC02667469500B25A9D /* config.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = W8LHF9DL7C;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Deep/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.francis.Deep;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		A9BA2DBD2667464B00B25A9D /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A9BA2DC02667469500B25A9D /* config.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = W8LHF9DL7C;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Deep/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.francis.Deep;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		A9BA2DD7266747C100B25A9D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9BA2DC02667469500B25A9D /* config.xcconfig */;
@@ -670,15 +528,6 @@
 			buildConfigurations = (
 				A9BA2DB92667464B00B25A9D /* Debug */,
 				A9BA2DBA2667464B00B25A9D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A9BA2DBB2667464B00B25A9D /* Build configuration list for PBXNativeTarget "Deep" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A9BA2DBC2667464B00B25A9D /* Debug */,
-				A9BA2DBD2667464B00B25A9D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

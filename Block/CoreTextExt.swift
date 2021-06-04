@@ -12,6 +12,7 @@ public struct RichTextLine{
     public var yOffset:CGFloat
     public var xOffset:CGFloat
     public var limit:CGSize
+    public var direction:Direction
     public struct RichTextLineInfo{
         public var ascent:CGFloat
         public var descent:CGFloat
@@ -79,15 +80,22 @@ public struct RichTextRun:CustomDebugStringConvertible{
     }
     public func rect(line:RichTextLine)->CGRect{
         let runinf = self.runInfo
-        return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset - runinf.descent, width: runinf.width, height: runinf.ascent + runinf.descent)
+        if line.direction == .H{
+            return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset, width: runinf.width, height: runinf.ascent + runinf.descent)
+        }else{
+            return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset - runinf.width , width: runinf.ascent + runinf.descent , height: runinf.width)
+        }
+        
     }
     public var block:Block?
 }
 
 public struct RichTextFrame{
     public var frame:CTFrame
-    public init(frame:CTFrame){
+    public var direction:Direction
+    public init(frame:CTFrame,direction:Direction){
         self.frame = frame
+        self.direction = direction
     }
     public var lines:[RichTextLine]{
     
@@ -97,9 +105,19 @@ public struct RichTextFrame{
         CTFrameGetLineOrigins(self.frame, CFRangeMake(0, lines.count), p)
         var result:[RichTextLine] = []
         for i in 0 ..< lines.count{
-            let l = RichTextLine(line: lines[i], yOffset: p.advanced(by: i).pointee.y, xOffset: p.advanced(by: i).pointee.x,limit: CTFrameGetPath(self.frame).boundingBoxOfPath.size)
+            
+            let y = p.advanced(by: i).pointee.y
+            let x = p.advanced(by: i).pointee.x
+            var l = RichTextLine(line: lines[i], yOffset: y, xOffset: x,limit: CTFrameGetPath(self.frame).boundingBoxOfPath.size, direction: self.direction)
+            if self.direction == .H{
+                l.yOffset -= l.lineInfo.descent
+            }else{
+                l.xOffset -= l.lineInfo.descent
+            }
+            
             result.append(l)
         }
+        p.deallocate()
         return result
     }
 }

@@ -31,13 +31,21 @@
                                     <action selector="drawWithSlider:" destination="BYZ-38-t0r" eventType="valueChanged" id="e05-oA-M2B"/>
                                 </connections>
                             </slider>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G5b-v0-XPU">
+                                <rect key="frame" x="182.5" y="150" width="51" height="31"/>
+                                <connections>
+                                    <action selector="chage:" destination="BYZ-38-t0r" eventType="valueChanged" id="4ns-D4-3Zr"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                         <constraints>
+                            <constraint firstItem="G5b-v0-XPU" firstAttribute="top" secondItem="QIM-O7-OXY" secondAttribute="bottom" constant="14" id="3RT-p2-YiJ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QIM-O7-OXY" secondAttribute="trailing" constant="20" id="4JV-SF-QKI"/>
                             <constraint firstItem="1rg-iG-lQk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KM4-k4-hET"/>
                             <constraint firstItem="K5H-z0-w6P" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LgS-SO-ZyF"/>
+                            <constraint firstItem="G5b-v0-XPU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="VHw-78-AWR"/>
                             <constraint firstItem="QIM-O7-OXY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="fAT-vK-tJy"/>
                             <constraint firstItem="1rg-iG-lQk" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="mch-Vx-NDU"/>
                             <constraint firstItem="QIM-O7-OXY" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="62" id="r5g-KG-Bv9"/>

@@ -103,6 +103,7 @@ public struct RichTextRun:CustomDebugStringConvertible{
     }
     public func rect(line:RichTextLine)->CGRect{
         let runinf = self.runInfo
+        if line.
         return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset - runinf.descent, width: runinf.width, height: runinf.ascent + runinf.descent)
     }
     public var block:Block?
