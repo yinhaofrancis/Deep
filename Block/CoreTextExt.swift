@@ -78,10 +78,30 @@ public struct RichTextRun:CustomDebugStringConvertible{
         xOffset = points.x
         yOffset = points.y
     }
-    public func rect(line:RichTextLine)->CGRect{
+    public func rect(line:RichTextLine,alignItem:Align,startOffset:CGFloat,stepOffset:CGFloat,index:Int,space:CGFloat,unsetIndex:[Int])->CGRect{
         let runinf = self.runInfo
+        let lineinf = line.lineInfo
+        let offset:CGFloat = startOffset + (CGFloat(index) > 0 ? stepOffset * CGFloat(index) : 0.0)
+        let dh = lineinf.ascent + lineinf.descent - runinf.ascent - runinf.descent
+        let expland:CGFloat = self.block?.width.mode == .unset ? space : 0;
+        let expandspace:CGFloat = unsetIndex.firstIndex(of: index) == nil ? 0 : space * CGFloat(unsetIndex.firstIndex(of: index)!)
         if line.direction == .H{
-            return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset, width: runinf.width, height: runinf.ascent + runinf.descent)
+            switch alignItem {
+            
+            case .start:
+                return CGRect(x: line.xOffset + self.xOffset + offset + expandspace, y: line.yOffset + self.yOffset + dh, width: runinf.width + expland, height: runinf.ascent + runinf.descent)
+            case .end:
+                return CGRect(x: line.xOffset + self.xOffset + offset + expandspace, y: line.yOffset + self.yOffset, width: runinf.width + expland, height: runinf.ascent + runinf.descent)
+            case .center:
+                return CGRect(x: line.xOffset + self.xOffset + offset + expandspace, y: line.yOffset + self.yOffset + dh / 2, width: runinf.width + expland, height: runinf.ascent + runinf.descent)
+            case .stretch:
+                if self.block?.height.mode == .unset{
+                    return CGRect(x: line.xOffset + self.xOffset + offset + expandspace, y: line.yOffset + self.yOffset, width: runinf.width + expland, height: lineinf.ascent + lineinf.descent)
+                }else{
+                    return CGRect(x: line.xOffset + self.xOffset + offset + expandspace, y: line.yOffset + self.yOffset + dh, width: runinf.width + expland, height: runinf.ascent + runinf.descent)
+                }
+            }
+            
         }else{
             return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset - runinf.width , width: runinf.ascent + runinf.descent , height: runinf.width)
         }
@@ -119,5 +139,8 @@ public struct RichTextFrame{
         }
         p.deallocate()
         return result
+    }
+    public var size:CGSize{
+        return CTFrameGetPath(self.frame).boundingBoxOfPath.size
     }
 }

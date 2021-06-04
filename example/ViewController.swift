@@ -24,22 +24,24 @@ class ViewController: UIViewController {
         self.draw(w: CGFloat(slider.value))
     }
     func draw(w:CGFloat){
-        tc = try! TextContext(w: Int(w), h: Int(w))
-        let c = Canvas { b in
+        tc = try! TextContext(w: Int(w), h: 300)
+        let c = Canvas {
             
-            Block(parent: b, width: 10, height: 20) { _ in }
-            Block(parent: b, width: 20, height: 30) { _ in }
-            Block(parent: b, width: 30, height: 40) { _ in }
-            Block(parent: b, width: 40, height: 50) { _ in }
-            Block(parent: b, width: w / 3.0, height: 60) { _ in }
+            Block(width: 10, height: 20) { }
+            Block(width: 20, height: 30) {}
+            Block(width: 30, height: 40) {  }
+            Block(width: 40, height: 50) {  }
+            Block() {  }
         
-            Block(parent: b) { b in
-                Block(parent: b, color: UIColor.blue.cgColor, width: 10, height: 10) { _ in }
-                Block(parent: b, color: UIColor.blue.cgColor, width: 20, height: 20) { _ in }
-                Block(parent: b, color: UIColor.blue.cgColor, width: 30, height: 30) { _ in }
+            Block(alignSelf: .stretch) {
+                Block(color: UIColor.blue.cgColor, width: 10, height: 10) {  }
+                Block(color: UIColor.blue.cgColor, width: 20, height: 20) {  }
+                Block(color: UIColor.blue.cgColor, width: 30, height: 30) {  }
             }
         }
         c.direction = self.direction
+        c.alignItem = .stretch
+        c.justcontent = .stretch
         label.image = UIImage(cgImage: tc.render(component: c)! ,scale: UIScreen.main.scale, orientation: .up)
         
 //        let a = RichText(width: 100) {

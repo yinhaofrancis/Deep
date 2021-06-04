@@ -16,18 +16,15 @@ extension NSAttributedString.Key{
 
 @resultBuilder
 public struct BlockBuild{
-    public static func buildBlock(_ components: Block...) -> NSAttributedString {
-        return components.reduce(NSMutableAttributedString()) { a, c in
-            a.append(c.aStr)
-            return a
-        }
+    public static func buildBlock(_ components: Block...) -> [Block] {
+        return components
     }
 }
 
 public class Canvas:Block{
 
-    public init(@BlockBuild childs:(Block)->NSAttributedString) {
-        super.init(parent: nil, color: CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1,1,1,1])! , width: .unset(direction: .H), height: .unset(direction: .V),direction: .H, childs: childs)
+    public init(@BlockBuild children:()->[Block]) {
+        super.init(color: CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1,1,1,1])! , width: .unset(direction: .H), height: .unset(direction: .V),direction: .H, childs: children)
     }
 }
 
@@ -43,6 +40,7 @@ public enum Content{
     case end
     case between
     case around
+    case stretch
     case evenly
 }
 
@@ -149,19 +147,18 @@ open class Block {
     public var justcontent:Content
     public var alignItem:Align
     public var alignContent:Content
-    public var alignSelf:Align
-    public convenience init(parent:Block?,
-                            color:CGColor? = nil,
+    public var alignSelf:Align?
+    public convenience init(color:CGColor? = nil,
                             width:CGFloat,
                             height:CGFloat,
                             direction:Direction = .H,
                             justcontent:Content = .start,
                             alignItem:Align = .stretch,
                             alignContent:Content = .start,
-                            alignSelf:Align = .stretch,
-                            @BlockBuild childs:(Block)->NSAttributedString) {
-        self.init(parent:parent,
-                  color:color,
+                            alignSelf:Align? = nil,
+        
+                            @BlockBuild childs:()->[Block]) {
+        self.init(color:color,
                   width:BFloat.value(v: width),
                   height:BFloat.value(v: height),
                   direction: direction,
@@ -171,19 +168,17 @@ open class Block {
                   alignSelf:alignSelf,
                   childs:childs)
     }
-    public init(parent:Block?,
-                color:CGColor? = nil,
+    public init(color:CGColor? = nil,
                 width:BFloat = .unset(direction: .H),
                 height:BFloat = .unset(direction: .V),
                 direction:Direction = .H,
                 justcontent:Content = .start,
                 alignItem:Align = .stretch,
                 alignContent:Content = .start,
-                alignSelf:Align = .stretch,
-                @BlockBuild childs:(Block)->NSAttributedString) {
+                alignSelf:Align? = nil,
+                @BlockBuild childs:()->[Block]) {
         self.width = width
         self.height = height
-        self.parent = parent
         self.baseline = .makeXValue(origin: 0)
         self.color = color
         var c = CTRunDelegateCallbacks(version: 0, dealloc: { _ in
@@ -203,7 +198,11 @@ open class Block {
         self.alignItem = alignItem
         self.alignContent = alignContent
         self.alignSelf = alignSelf
-        self.content = childs(self)
+        self.content = childs().reduce(NSMutableAttributedString(), { a, b in
+            b.parent = self
+            a.append(b.aStr)
+            return a
+        })
         self.rundelegate = CTRunDelegateCreate(&c, Unmanaged<Block>.passUnretained(self).toOpaque())
     }
     public var aStr: CFAttributedString{
@@ -241,14 +240,71 @@ open class Block {
         let frameset = self.contentFrame
         let frame = CTFramesetterCreateFrame(frameset, CFRangeMake(0,self.content.length), CGPath(rect: rect , transform: nil), [kCTFrameProgressionAttributeName:self.direction == .H ? CTFrameProgression.topToBottom.rawValue: CTFrameProgression.leftToRight.rawValue] as CFDictionary)
         let rframe = RichTextFrame(frame: frame, direction: self.direction)
-        for u in rframe.lines{
-            for i in u.delegateRun{
-                let crect = i.rect(line: u)
-                i.block?.draw(ctx: ctx, rect: CGRect(x: rect.origin.x + crect.origin.x, y: rect.origin.y + crect.origin.y, width: crect.width, height: crect.height))
+        let rflines = rframe.lines
+        
+        for u in rflines{
+            let delegetRun = u.delegateRun
+            let startAndStep = self.makeStartAndStep(rframe: rframe, delegetRun: delegetRun)
+            let start:CGFloat = startAndStep.0
+            let step:CGFloat = startAndStep.1
+            let space:CGFloat = startAndStep.2
+            for i in 0 ..< delegetRun.count{
+                let eachRun = delegetRun[i]
+                let align = eachRun.block?.alignSelf == nil ? self.alignItem : eachRun.block!.alignSelf!
+                let crect = eachRun.rect(line: u,alignItem: align, startOffset: start, stepOffset: step, index: i,space: space, unsetIndex: startAndStep.3)
+                eachRun.block?.draw(ctx: ctx, rect: CGRect(x: rect.origin.x + crect.origin.x, y: rect.origin.y + crect.origin.y, width: crect.width, height: crect.height))
 
             }
         }
         ctx.restoreGState()
+    }
+    private func makeStartAndStep(rframe:RichTextFrame,delegetRun:[RichTextRun])->(CGFloat,CGFloat,CGFloat,[Int]){
+        var start:CGFloat = 0
+        var step:CGFloat = 0
+        let delta = rframe.size.width - delegetRun.reduce(0.0, { r, c in
+            r + c.runInfo.width
+        })
+        var unsetW:[Int] = []
+        for i in 0 ..< delegetRun.count{
+            if delegetRun[i].block?.width.mode == .unset{
+                unsetW.append(i)
+            }
+        }
+        
+        switch self.justcontent {
+        case .start:
+            start = 0
+            step = 0
+            break
+        case .center:
+            start = delta / 2
+            step = 0
+            break
+        case .end:
+            start = delta
+            step = 0
+            break
+        case .between:
+            start = 0
+            step = delegetRun.count > 1 ? 0 : delta / CGFloat(delegetRun.count - 1)
+            break
+        case .around:
+            start = delta / CGFloat(delegetRun.count * 2)
+            step = start * 2
+            break
+        case .evenly:
+            start = delta / CGFloat(delegetRun.count + 1)
+            step = start
+            break
+        case .stretch:
+            start = 0
+            step = 0
+            if unsetW.count > 0 {
+                return (0,0,delta / CGFloat(unsetW.count),unsetW)
+            }
+            break
+        }
+        return (start,step,0,[])
     }
     public var contentFrame:CTFramesetter{
         let a = NSMutableAttributedString(attributedString: self.content)
