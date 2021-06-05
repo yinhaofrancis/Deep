@@ -19,6 +19,18 @@ public struct BlockBuild{
     public static func buildBlock(_ components: Block...) -> [Block] {
         return components
     }
+    public static func buildEither(first component: [Block]) -> [Block] {
+        return component
+    }
+    public static func buildEither(second component: [Block]) -> [Block] {
+        return component
+    }
+    public static func buildArray(_ components: [[Block]]) -> [Block] {
+        return components.flatMap {$0}
+    }
+    public static func buildOptional(_ component: [Block]?) -> [Block] {
+        return component ?? []
+    }
 }
 
 public class Canvas:Block{
