@@ -42,6 +42,7 @@ class ViewController: UIViewController {
         c.direction = self.direction
         c.alignItem = .center
         c.justcontent = .around
+        c.alignContent = .evenly
         label.image = UIImage(cgImage: tc.render(component: c)! ,scale: UIScreen.main.scale, orientation: .up)
         
 //        let a = RichText(width: 100) {
