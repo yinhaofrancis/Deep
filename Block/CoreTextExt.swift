@@ -104,18 +104,17 @@ public struct RichTextRun:CustomDebugStringConvertible{
         }else{
             let dh = lineinf.ascent + lineinf.descent - runinf.ascent - runinf.descent
             switch alignItem {
-            
             case .start:
                 return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset - runinf.width , width: runinf.ascent + runinf.descent , height: runinf.width)
             case .end:
-                return CGRect(x: line.xOffset + self.xOffset + dh, y: line.yOffset + self.yOffset , width: runinf.width, height: runinf.ascent + runinf.descent)
+                return CGRect(x: line.xOffset + self.xOffset + dh, y: line.yOffset + self.yOffset - runinf.width - offset , width: runinf.ascent + runinf.descent , height: runinf.width)
             case .center:
-                return CGRect(x: line.xOffset + self.xOffset + dh / 2, y: line.yOffset + self.yOffset - runinf.width , width: runinf.ascent + runinf.descent , height: runinf.width)
+                return CGRect(x: line.xOffset + self.xOffset + dh / 2, y: line.yOffset + self.yOffset - runinf.width - offset, width: runinf.ascent + runinf.descent , height: runinf.width)
             case .stretch:
                 if self.block?.width.mode == .unset{
-                    return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset - runinf.width , width: lineinf.ascent + lineinf.descent , height: runinf.width)
+                    return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset - runinf.width - offset, width: lineinf.ascent + lineinf.descent , height: runinf.width)
                 }else{
-                    return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset - runinf.width , width: runinf.ascent + runinf.descent , height: runinf.width)
+                    return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset - runinf.width - offset, width: runinf.ascent + runinf.descent , height: runinf.width)
                 }
             }
             

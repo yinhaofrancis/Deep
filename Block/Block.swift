@@ -188,22 +188,13 @@ open class Block {
             
         }, getAscent: { i in
             let b = Unmanaged<Block>.fromOpaque(i).takeUnretainedValue()
-            
             return b.ascent
         }, getDescent: { i in
             let b = Unmanaged<Block>.fromOpaque(i).takeUnretainedValue()
-//            if b.parent?.direction == .V{
-//                return b.descent + b.extra
-//            }else{
-                return b.descent
-//            }
+            return b.descent
         }, getWidth: { i in
             let b = Unmanaged<Block>.fromOpaque(i).takeUnretainedValue()
-//            if b.parent?.direction == .H{
-                return b.size + b.extra
-//            }else{
-//                return b.size
-//            }
+            return b.size + b.extra
             
         })
         self.justcontent = justcontent
@@ -255,7 +246,7 @@ open class Block {
         
         for u in rflines{
             let delegetRun = u.delegateRun
-            let startAndStep = self.makeStartAndStep(rframe: rframe, delegetRun: delegetRun)
+            let startAndStep = self.makeRunStartAndStep(rframe: rframe, delegetRun: delegetRun)
             let start:CGFloat = startAndStep.0
             let step:CGFloat = startAndStep.1
             for i in 0 ..< delegetRun.count{
@@ -303,19 +294,16 @@ open class Block {
             }
         }
     }
-    private func makeStartAndStep(rframe:RichTextFrame,delegetRun:[RichTextRun])->(CGFloat,CGFloat){
+    private func makeRunStartAndStep(rframe:RichTextFrame,delegetRun:[RichTextRun])->(CGFloat,CGFloat){
         var start:CGFloat = 0
         var step:CGFloat = 0
-        let delta = rframe.size.width - delegetRun.reduce(0.0, { r, c in
+        
+        let delta = self.direction == .H ?
+            rframe.size.width - delegetRun.reduce(0.0, { r, c in
+            r + c.runInfo.width
+        }) : rframe.size.height - delegetRun.reduce(0.0, { r, c in
             r + c.runInfo.width
         })
-        var unsetW:[Int] = []
-        for i in 0 ..< delegetRun.count{
-            if delegetRun[i].block?.width.mode == .unset{
-                unsetW.append(i)
-            }
-        }
-        
         switch self.justcontent {
         case .start:
             start = 0
