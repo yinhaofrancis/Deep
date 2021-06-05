@@ -188,22 +188,13 @@ open class Block {
             
         }, getAscent: { i in
             let b = Unmanaged<Block>.fromOpaque(i).takeUnretainedValue()
-            
             return b.ascent
         }, getDescent: { i in
             let b = Unmanaged<Block>.fromOpaque(i).takeUnretainedValue()
-//            if b.parent?.direction == .V{
-//                return b.descent + b.extra
-//            }else{
-                return b.descent
-//            }
+            return b.descent
         }, getWidth: { i in
             let b = Unmanaged<Block>.fromOpaque(i).takeUnretainedValue()
-//            if b.parent?.direction == .H{
-                return b.size + b.extra
-//            }else{
-//                return b.size
-//            }
+            return b.size + b.extra
             
         })
         self.justcontent = justcontent
@@ -252,16 +243,24 @@ open class Block {
         self.fillSpace(rect: rect)
         let rframe = self.createRFrame(rect: rect)
         let rflines = rframe.lines
-        
-        for u in rflines{
+        let startAndStep = self.makeLineStartAndStep(rframe: rframe, lines: rflines)
+        let start:CGFloat = startAndStep.0
+        let step:CGFloat = startAndStep.1
+        for lindex in 0 ..< rflines.count{
+            
+            let loffset:CGFloat = start + (CGFloat(lindex) > 0 ? step * CGFloat(lindex) : 0.0)
+            
+            let u = rflines[lindex]
+            
             let delegetRun = u.delegateRun
-            let startAndStep = self.makeStartAndStep(rframe: rframe, delegetRun: delegetRun)
+            let startAndStep = self.makeRunStartAndStep(rframe: rframe, delegetRun: delegetRun)
             let start:CGFloat = startAndStep.0
             let step:CGFloat = startAndStep.1
             for i in 0 ..< delegetRun.count{
                 let eachRun = delegetRun[i]
+                let roffset:CGFloat = start + (CGFloat(i) > 0 ? step * CGFloat(i) : 0.0)
                 let align = eachRun.block?.alignSelf == nil ? self.alignItem : eachRun.block!.alignSelf!
-                let crect = eachRun.rect(line: u,alignItem: align, startOffset: start, stepOffset: step, index: i)
+                let crect = eachRun.rect(line: u,alignItem: align, offset: roffset, lineOffset: loffset, index: i)
                 eachRun.block?.draw(ctx: ctx, rect: CGRect(x: rect.origin.x + crect.origin.x, y: rect.origin.y + crect.origin.y, width: crect.width, height: crect.height))
 
             }
@@ -303,19 +302,52 @@ open class Block {
             }
         }
     }
-    private func makeStartAndStep(rframe:RichTextFrame,delegetRun:[RichTextRun])->(CGFloat,CGFloat){
+    private func makeLineStartAndStep(rframe:RichTextFrame,
+                                      lines:[RichTextLine])->(CGFloat,CGFloat){
+        let sum = lines.reduce(0.0, { r, c in
+            r + c.lineInfo.ascent + c.lineInfo.descent
+        })
         var start:CGFloat = 0
         var step:CGFloat = 0
-        let delta = rframe.size.width - delegetRun.reduce(0.0, { r, c in
+        let delta = self.direction == .H ?
+            rframe.size.height - sum : rframe.size.width - sum
+        switch self.alignContent {
+        case .start:
+            start = 0
+            step = 0
+            break
+        case .center:
+            start = delta / 2
+            step = 0
+            break
+        case .end:
+            start = delta
+            step = 0
+            break
+        case .between:
+            start = 0
+            step = lines.count > 1 ? 0 : delta / CGFloat(lines.count - 1)
+            break
+        case .around:
+            start = delta / CGFloat(lines.count * 2)
+            step = start * 2
+            break
+        case .evenly:
+            start = delta / CGFloat(lines.count + 1)
+            step = start
+            break
+        }
+        return (start,step)
+    }
+    private func makeRunStartAndStep(rframe:RichTextFrame,
+                                     delegetRun:[RichTextRun])->(CGFloat,CGFloat){
+        var start:CGFloat = 0
+        var step:CGFloat = 0
+        let sum = delegetRun.reduce(0.0, { r, c in
             r + c.runInfo.width
         })
-        var unsetW:[Int] = []
-        for i in 0 ..< delegetRun.count{
-            if delegetRun[i].block?.width.mode == .unset{
-                unsetW.append(i)
-            }
-        }
-        
+        let delta = self.direction == .H ?
+            rframe.size.width - sum : rframe.size.height - sum
         switch self.justcontent {
         case .start:
             start = 0

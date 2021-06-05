@@ -78,44 +78,46 @@ public struct RichTextRun:CustomDebugStringConvertible{
         xOffset = points.x
         yOffset = points.y
     }
-    public func rect(line:RichTextLine,alignItem:Align,startOffset:CGFloat,stepOffset:CGFloat,index:Int)->CGRect{
+    public func rect(line:RichTextLine,
+                     alignItem:Align,
+                     offset:CGFloat,
+                     lineOffset:CGFloat,
+                     index:Int)->CGRect{
         let runinf = self.runInfo
         let lineinf = line.lineInfo
-        let offset:CGFloat = startOffset + (CGFloat(index) > 0 ? stepOffset * CGFloat(index) : 0.0)
         if line.direction == .H{
             
             let dh = lineinf.ascent + lineinf.descent - runinf.ascent - runinf.descent
             switch alignItem {
             
             case .start:
-                return CGRect(x: line.xOffset + self.xOffset + offset, y: line.yOffset + self.yOffset + dh, width: runinf.width, height: runinf.ascent + runinf.descent)
+                return CGRect(x: line.xOffset + self.xOffset + offset, y: line.yOffset + self.yOffset + dh - lineOffset, width: runinf.width, height: runinf.ascent + runinf.descent)
             case .end:
-                return CGRect(x: line.xOffset + self.xOffset + offset, y: line.yOffset + self.yOffset, width: runinf.width, height: runinf.ascent + runinf.descent)
+                return CGRect(x: line.xOffset + self.xOffset + offset, y: line.yOffset + self.yOffset - lineOffset, width: runinf.width, height: runinf.ascent + runinf.descent)
             case .center:
-                return CGRect(x: line.xOffset + self.xOffset + offset, y: line.yOffset + self.yOffset + dh / 2, width: runinf.width, height: runinf.ascent + runinf.descent)
+                return CGRect(x: line.xOffset + self.xOffset + offset, y: line.yOffset + self.yOffset + dh / 2 - lineOffset, width: runinf.width, height: runinf.ascent + runinf.descent)
             case .stretch:
                 if self.block?.height.mode == .unset{
-                    return CGRect(x: line.xOffset + self.xOffset + offset, y: line.yOffset + self.yOffset, width: runinf.width, height: lineinf.ascent + lineinf.descent)
+                    return CGRect(x: line.xOffset + self.xOffset + offset, y: line.yOffset + self.yOffset - lineOffset, width: runinf.width, height: lineinf.ascent + lineinf.descent)
                 }else{
-                    return CGRect(x: line.xOffset + self.xOffset + offset, y: line.yOffset + self.yOffset + dh, width: runinf.width, height: runinf.ascent + runinf.descent)
+                    return CGRect(x: line.xOffset + self.xOffset + offset, y: line.yOffset + self.yOffset + dh - lineOffset, width: runinf.width, height: runinf.ascent + runinf.descent)
                 }
             }
             
         }else{
             let dh = lineinf.ascent + lineinf.descent - runinf.ascent - runinf.descent
             switch alignItem {
-            
             case .start:
-                return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset - runinf.width , width: runinf.ascent + runinf.descent , height: runinf.width)
+                return CGRect(x: line.xOffset + self.xOffset + lineOffset, y: line.yOffset + self.yOffset - runinf.width , width: runinf.ascent + runinf.descent , height: runinf.width)
             case .end:
-                return CGRect(x: line.xOffset + self.xOffset + dh, y: line.yOffset + self.yOffset , width: runinf.width, height: runinf.ascent + runinf.descent)
+                return CGRect(x: line.xOffset + self.xOffset + dh + lineOffset, y: line.yOffset + self.yOffset - runinf.width - offset , width: runinf.ascent + runinf.descent , height: runinf.width)
             case .center:
-                return CGRect(x: line.xOffset + self.xOffset + dh / 2, y: line.yOffset + self.yOffset - runinf.width , width: runinf.ascent + runinf.descent , height: runinf.width)
+                return CGRect(x: line.xOffset + self.xOffset + dh / 2 + lineOffset, y: line.yOffset + self.yOffset - runinf.width - offset, width: runinf.ascent + runinf.descent , height: runinf.width)
             case .stretch:
                 if self.block?.width.mode == .unset{
-                    return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset - runinf.width , width: lineinf.ascent + lineinf.descent , height: runinf.width)
+                    return CGRect(x: line.xOffset + self.xOffset + lineOffset, y: line.yOffset + self.yOffset - runinf.width - offset, width: lineinf.ascent + lineinf.descent , height: runinf.width)
                 }else{
-                    return CGRect(x: line.xOffset + self.xOffset, y: line.yOffset + self.yOffset - runinf.width , width: runinf.ascent + runinf.descent , height: runinf.width)
+                    return CGRect(x: line.xOffset + self.xOffset + lineOffset, y: line.yOffset + self.yOffset - runinf.width - offset, width: runinf.ascent + runinf.descent , height: runinf.width)
                 }
             }
             
