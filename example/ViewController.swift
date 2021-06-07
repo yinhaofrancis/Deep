@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var text2: UIImageView!
     @IBOutlet weak var label: UIImageView!
     var direction:Direction = .H
-    var tc:TextContext = try! TextContext(w: 100, h: 200)
+    var tc:TextContext = try! TextContext(w: 100, h: 200, scale: 2)
     override func viewDidLoad() {
         super.viewDidLoad()
         self.draw(w: 200);
@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         self.draw(w: CGFloat(slider.value))
     }
     func draw(w:CGFloat){
-        tc = try! TextContext(w: Int(w), h: Int(w))
+        tc = try! TextContext(w: Int(w), h: Int(w), scale: 2)
         let c = Canvas {
             
             Block(width: 10, height: 20) { }
