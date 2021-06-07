@@ -37,6 +37,7 @@ public class Canvas:Block{
 
     public init(@BlockBuild children:()->[Block]) {
         super.init(color: CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1,1,1,1])! , bWidth: .unset(direction: .H), bHeight: .unset(direction: .V),direction: .H, childs: children)
+        self.rundelegate = nil
     }
 }
 
@@ -106,7 +107,7 @@ public struct BFloat{
     }
 }
 
-public typealias buildBlock = (Block)->NSAttributedString
+
 open class Block {
     open var ascent:CGFloat{
         guard let p = parent else { return 0 }
@@ -153,7 +154,7 @@ open class Block {
     open var color:CGColor?
     open var content:NSAttributedString = NSAttributedString(string: "")
     public var rundelegate:CTRunDelegate?
-    public var parent:Block?
+    public weak var parent:Block?
     public var direction:Direction = .H
     public var justcontent:Content
     public var alignItem:Align
@@ -222,23 +223,13 @@ open class Block {
         self.rundelegate = CTRunDelegateCreate(&c, Unmanaged<Block>.passUnretained(self).toOpaque())
     }
     public var aStr: CFAttributedString{
-        let size = UnsafeMutablePointer<CGFloat>.allocate(capacity: 1)
-        size.pointee = 0
-        let maxspaceing = CTParagraphStyleSetting(spec: .maximumLineSpacing, valueSize: MemoryLayout<CGFloat>.size, value: size)
-        let mimspaceing = CTParagraphStyleSetting(spec: .minimumLineSpacing, valueSize: MemoryLayout<CGFloat>.size, value: size)
-        let lineajSize = CTParagraphStyleSetting(spec: .lineSpacingAdjustment, valueSize: MemoryLayout<CGFloat>.size, value: size)
-        let parasize = CTParagraphStyleSetting(spec: .paragraphSpacing, valueSize: MemoryLayout<CGFloat>.size, value: size)
-        let param = CTParagraphStyleSetting(spec: .paragraphSpacingBefore, valueSize: MemoryLayout<CGFloat>.size, value: size)
-        let p = CTParagraphStyleCreate([maxspaceing,mimspaceing,lineajSize,parasize,param], 5)
         if let rd = self.rundelegate, let clear = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [0,0,0,0]){
             let atr = CFAttributedStringCreate(kCFAllocatorDefault, "1" as CFString, [
                 kCTForegroundColorAttributeName:clear,
                 kCTFontAttributeName:CTFontCreateUIFontForLanguage(.system, 0.001, nil) ?? CTFontCreateWithName("TimesNewRomanPSMT" as CFString, 0.001, nil),
                 kCTRunDelegateAttributeName:rd,
                 (NSAttributedString.Key.runBlock.rawValue as CFString):self,
-                kCTParagraphStyleAttributeName:p
             ] as CFDictionary)
-            size.deallocate()
             return atr ?? NSAttributedString() as CFAttributedString
         }
         return NSAttributedString()
@@ -391,7 +382,7 @@ open class Block {
     public var contentFrame:CTFramesetter{
         let a = NSMutableAttributedString(attributedString: self.content)
         
-        a.addAttribute(.verticalGlyphForm, value: self.direction == .H ? 0 : 1, range: NSMakeRange(0, a.length))
+        a.addAttribute(NSAttributedString.Key(rawValue: kCTVerticalFormsAttributeName as String), value: self.direction == .H ? 0 : 1, range: NSMakeRange(0, a.length))
         return CTFramesetterCreateWithAttributedString(a)
     }
     public var contentSize:CGSize{
