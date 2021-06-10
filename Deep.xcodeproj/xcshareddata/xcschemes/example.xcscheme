@@ -38,6 +38,26 @@
                ReferencedContainer = "container:Deep.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A9CD05742670C7AA002C1123"
+               BuildableName = "DeepTests.xctest"
+               BlueprintName = "DeepTests"
+               ReferencedContainer = "container:Deep.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A9CD05982670C8F1002C1123"
+               BuildableName = "BeanTests.xctest"
+               BlueprintName = "BeanTests"
+               ReferencedContainer = "container:Deep.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

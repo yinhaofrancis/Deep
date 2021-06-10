@@ -29,7 +29,6 @@ class exampleTests: XCTestCase {
         XCTAssert(ss.header?.remoteUrl == URL(string: "https://www.qq.com")!, "remote url fail")
         XCTAssert(ss.header?.success == true, " status fail ")
         try ss.appendData(data: "dadasdad".data(using: .utf8)!)
-        print(ss.originModel)
         XCTAssert(ss.originModel == "dadasdad", "fail")
     }
     
